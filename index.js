@@ -71,7 +71,7 @@ module.exports = function (config, windowParams) {
             authWindow.close();
             authWindow = null;
           });
-        } else if (code) {
+        } else if (code && url.indexOf(config.redirectUri) === 0) {
           resolve(code);
           authWindow.removeAllListeners('closed');
           setImmediate(function () {
