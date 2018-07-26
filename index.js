@@ -20,6 +20,9 @@ var generateRandomString = function (length) {
 };
 
 module.exports = function (config, windowParams) {
+
+  let authWindow = null
+
   function getAuthorizationCode(opts) {
     opts = opts || {};
 
@@ -45,12 +48,17 @@ module.exports = function (config, windowParams) {
     var url = config.authorizationUrl + '?' + queryString.stringify(urlParams);
 
     return new Promise(function (resolve, reject) {
-      let authWindow = new BrowserWindow(windowParams || {'use-content-size': true});
+      if(authWindow){
+        authWindow.show();
+        return
+      }
+      authWindow = new BrowserWindow(windowParams || {'use-content-size': true});
 
       authWindow.loadURL(url);
       authWindow.show();
 
-      authWindow.on('closed', () => {
+      authWindow.once('closed', () => {
+        authWindow = null
         reject(new Error('window was closed by user'));
       });
 
