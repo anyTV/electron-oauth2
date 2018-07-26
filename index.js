@@ -49,6 +49,7 @@ module.exports = function (config, windowParams) {
 
     return new Promise(function (resolve, reject) {
       if(authWindow){
+        authWindow.loadURL(url);
         authWindow.show();
         return
       }
